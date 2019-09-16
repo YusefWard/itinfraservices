@@ -1,0 +1,10 @@
+ping-
+ ansible -m ping -i itinfraservices/lab1/hosts 127.0.0.1
+ping (result)-
+127.0.0.1 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+
+show process list-
+  ansible -m shell -a 'ps -ef' -i itinfraservices/lab1/hosts 127.0.0.1
