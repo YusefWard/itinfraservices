@@ -1,0 +1,28 @@
+---
+- name: First play
+  hosts: 127.0.0.1
+  remote_user: yusef
+  become: yes
+  tasks:
+  - name: Create ssh keys for admin
+    command : ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -C "" -N ""
+    args:
+      creates: /etc/ssh/ssh_host_rsa_key
+  
+  - name: Sudo without password
+    copy:
+      dest: /etc/sudoers.d/user
+      content: "yusef      ALL = NOPASSWD: ALL"
+  - name: Add group "sysadmins" to remote server
+    remote_user: ansible
+    become: yes
+    become_method: sudo 
+    group:
+      name: sysadmins
+      state: present
+  - name: Show process list
+    command: ""
+    register: abc
+  - name: Show process output
+    debug:
+      var: abc.stdout_lines
