@@ -2,7 +2,7 @@ ping-
  ansible -m ping -i itinfraservices/lab1/hosts 127.0.0.1
 ping (result)-
 127.0.0.1 | SUCCESS => {
-    "changed": false, 
+    "changed" : false, 
     "ping": "pong"
 }
 

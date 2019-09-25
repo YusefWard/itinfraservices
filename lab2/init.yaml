@@ -8,7 +8,7 @@
     authorized_key:
       user: yusef
       state: present 
-      key: "{{ lookup('file', '/home/YusefWard/.ssh/id_rsa.pub') }}"
+      key: "{{ lookup('file', '/Users/YusefWard/.ssh/id_rsa.pub') }}"
     
   - name: Authorize Roman Kuchin SSH
     authorized_key:
@@ -42,9 +42,11 @@
       name: hudolejev
       groups: sysadmins,teachers
       append: yes
+
   - name: Show process list
     command: "ps"
     register: abc
+
   - name: Show process output
     debug:
       var: abc.stdout_lines
