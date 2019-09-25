@@ -4,24 +4,46 @@
   remote_user: yusef
   become: yes
   tasks:
-  - name: Create ssh keys for admin
-    command : ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -C "" -N ""
-    args:
-      creates: /etc/ssh/ssh_host_rsa_key
-  
+  - name: Initialize SSH 
+    authorized_key:
+      user: yusef
+      state: present 
+      key: "{{ lookup('file', '/home/YusefWard/.ssh/id_rsa.pub') }}"
+    
+  - name: Authorize Roman Kuchin SSH
+    authorized_key:
+      user: yusef
+      state: present
+      key: https://github.com/romankuchin.keys
+  - name: Authorize Juri Hudolejev with SSH
+    authorized_key:
+      user: yusef
+      state: present
+      key: https://github.com/hudolejev.keys
   - name: Sudo without password
     copy:
-      dest: /etc/sudoers.d/user
+      dest: /etc/sudoers.d/yusef
       content: "yusef      ALL = NOPASSWD: ALL"
-  - name: Add group "sysadmins" to remote server
-    remote_user: ansible
-    become: yes
-    become_method: sudo 
+  - name: Create teachers group
+    group:
+      name: teachers
+      state: present
+  - name: Create sysadmins group
     group:
       name: sysadmins
       state: present
+  - name: Add Roman Kuchin to sysadmins
+    user:
+      name: romankuchin
+      groups: sysadmins,teachers
+      append: yes
+  - name: Add Juri Hudolejev to sysadmins
+    user:
+      name: hudolejev
+      groups: sysadmins,teachers
+      append: yes
   - name: Show process list
-    command: ""
+    command: "ps"
     register: abc
   - name: Show process output
     debug:
