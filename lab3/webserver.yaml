@@ -1,0 +1,22 @@
+- name: Second play
+  hosts: ubuntu
+  remote_user: yusef
+  become: yes
+  tasks:
+    - name: Install Apache
+      apt: name=apache2 state=latest update_cache=yes
+    - name: Update Apache configuration to listen on custom port
+      copy:
+        src: ports.conf
+        dest: /etc/apache2/ports.conf
+    - name: Install php
+      apt: name=php
+    - name: Add configuration
+      copy:
+        src: 8080-default.conf
+        dest: /etc/apache2/sites-enabled/
+    - name: Add php website
+      copy:
+        src: index.php
+        dest: /var/www/php/
+    
