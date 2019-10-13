@@ -1,7 +1,0 @@
----
-- name: First play 
-  hosts: ubuntu
-  remote_user: yusef
-  become: yes
-  tasks: 
-    - name: 

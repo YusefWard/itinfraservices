@@ -1,0 +1,90 @@
+---
+- name: First Play
+  hosts: database
+  remote_user: yusef
+  become: yes
+  vars:
+    password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64653632326434313032323530656631333463623461396631363936353263336537343036643431
+          3134323061353433643230343130626363306365653932310a313538663761623833303732636266
+          37623263633164333636343837663762373266326661653561653765666430626265613364303530
+          3662366334306462630a323239643433323230306538383637393761383633396563386461636563
+          3533 
+  tasks:
+     - name: Installing Packages
+       apt: 
+        name: 
+          - python-mysqldb
+          - mysql-server
+          - mysql-client
+        state: latest
+     - name: Create database
+       mysql_db:
+        name: yusef
+        state: present
+     - name: Create database user
+       mysql_user:
+        name: yusef
+        password: "{{ password }}"
+        priv: '*.*:ALL'
+        state: present
+          
+- name: Second Play
+  hosts: ubuntu
+  remote_user: yusef
+  become: yes
+  vars:
+    password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          64653632326434313032323530656631333463623461396631363936353263336537343036643431
+          3134323061353433643230343130626363306365653932310a313538663761623833303732636266
+          37623263633164333636343837663762373266326661653561653765666430626265613364303530
+          3662366334306462630a323239643433323230306538383637393761383633396563386461636563
+          3533 
+  tasks:
+    - name: print
+      debug:
+        var: username
+    - name: Installing Packages
+      apt: 
+        name: 
+          - apache2
+          - php
+          - php-mysql
+          - wordpress
+          - libapache2-mod-php
+        state: latest
+
+    - name: Update Apache configuration to listen on custom port
+      copy:
+        src: ports.conf
+        dest: /etc/apache2/ports.conf 
+    - name: Add configuration for 8080
+      copy:
+        src: 8080-default.conf
+        dest: /etc/apache2/sites-enabled/
+    - name: Download wordpress
+      get_url:
+        url: https://wordpress.org/latest.tar.gz 
+        dest: /tmp/wordpress.tar.gz
+    - name: Extract wordpress
+      unarchive:
+        src: /tmp/wordpress.tar.gz
+        dest: /var/www/html/
+        copy: no
+        creates: /var/www/html/wordpress
+    - name: Update Apache
+      lineinfile:
+        dest: /etc/apache2/sites-enabled/000-default.conf
+        regexp: "(.)+DocumentRoot /var/www/html"
+        line: "DocumentRoot /var/www/wordpress"
+
+    - name: Copy 
+      copy:
+        src: wp-config-sample.php
+        dest: /var/www/wordpress/wp-config.php
+    - name: restart apache
+      service: 
+        name: apache2
+        state: restarted
