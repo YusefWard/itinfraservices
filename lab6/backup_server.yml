@@ -1,0 +1,22 @@
+---
+- name: Create User,Group,Dir, Establish SSH
+  hosts: 127.0.0.1
+  remote_user: vm2
+  become: yes 
+  tasks:
+    - name: Create group backup
+      group:
+        name: backup
+        state: present
+    - name: Create User
+      user:
+        name: backup
+        groups: sudo, backup
+        append: yes
+    - name: Create directory backup
+      file:
+        path: /srv/backup/
+        owner: backup
+        group: backup
+        state: directory
+        mode: 770
