@@ -11,8 +11,10 @@
     - name: Create User
       user:
         name: backup
-        groups: sudo, backup
+        group: backup
         append: yes
+        state: present
+        system: yes
     - name: Create directory backup
       file:
         path: /srv/backup/
@@ -20,3 +22,9 @@
         group: backup
         state: directory
         mode: 770
+    - name: Initialize SSH 
+      authorized_key:
+        user: backup
+        state: present 
+        key: "{{ lookup('file', '/Users/YusefWard/.ssh/id_rsa.pub') }}"
+   

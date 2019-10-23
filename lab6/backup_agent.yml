@@ -1,6 +1,6 @@
 ---
 - name: Create User and Group
-  hosts: 127.0.0.1
+  hosts: ubuntu
   remote_user: yusef
   become: yes 
   tasks:
@@ -8,11 +8,29 @@
       group:
         name: backup
         state: present
-    - name: Add user backup to backup
+    - name: Create User
       user:
         name: backup
-        groups: sudo, backup
+        group: backup
         append: yes
         state: present
         system: yes
-        
+    - name: Initialize SSH 
+      authorized_key:
+        user: backup
+        state: present 
+        key: "{{ lookup('file', '/Users/YusefWard/.ssh/id_rsa.pub') }}"
+    - name: Copy private key 
+      copy:
+        src: /Users/YusefWard/.ssh/id_rsa
+        dest: ~/.ssh/id_rsa
+      become_user: backup
+    - name: Copy public key
+      copy:
+        src: /Users/YusefWard/.ssh/id_rsa.pub
+        dest: ~/.ssh/id_rsa.pub
+      become_user: backup
+
+
+
+  
