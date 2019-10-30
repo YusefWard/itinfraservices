@@ -21,10 +21,14 @@
         owner: backup
         group: backup
         state: directory
-        mode: 770
+        mode: '770'
     - name: Initialize SSH 
       authorized_key:
         user: backup
         state: present 
         key: "{{ lookup('file', '/Users/YusefWard/.ssh/id_rsa.pub') }}"
-   
+    - name: Copy public key
+      copy:
+        src: /Users/YusefWard/.ssh/id_rsa.pub
+        dest: ~/.ssh/id_rsa.pub
+      become_user: backup
