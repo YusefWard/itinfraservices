@@ -1,6 +1,6 @@
 ---
 - name: Create User,Group,Dir, Establish SSH
-  hosts: 127.0.0.1
+  hosts: vm2
   remote_user: vm2
   become: yes 
   tasks:
@@ -11,8 +11,10 @@
     - name: Create User
       user:
         name: backup
+        password: "123"
         group: backup
         append: yes
+        shell: /bin/bash
         state: present
         system: yes
     - name: Create directory backup

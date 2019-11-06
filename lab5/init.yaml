@@ -1,0 +1,27 @@
+---
+- name: Init for yusef
+  hosts: ubuntu
+  become: yes
+  tasks:
+  - name: Sudo without password
+    copy:
+      dest: /etc/sudoers.d/yusef
+      content: "yusef   ALL = NOPASSWD: ALL"  
+  - name: Initialize SSH connection
+    authorized_key:
+      user: yusef
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+- name: Init for vm2
+  hosts: 192.168.56.102
+  become: yes
+  tasks:
+  - name: Sudo without password
+    copy:
+      dest: /etc/sudoers.d/vm2
+      content: "vm2    ALL = NOPASSWD: ALL"  
+  - name: Initialize SSH connection
+    authorized_key:
+      user: vm2
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

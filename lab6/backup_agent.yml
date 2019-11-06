@@ -11,9 +11,11 @@
     - name: Create User
       user:
         name: backup
+        password: "123"
         group: backup
         append: yes
         state: present
+        shell : /bin/bash
         system: yes
     - name: Initialize SSH 
       authorized_key:
@@ -24,6 +26,7 @@
       copy:
         src: /Users/YusefWard/.ssh/id_rsa
         dest: ~/.ssh/id_rsa
+        mode: 0600
       become_user: backup
     - name: Copy public key
       copy:
