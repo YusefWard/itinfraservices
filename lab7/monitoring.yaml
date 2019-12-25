@@ -1,0 +1,6 @@
+--- 
+- name: node_exporter
+  hosts: linux
+  become: yes 
+  roles:
+    - node_exporter

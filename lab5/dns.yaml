@@ -1,26 +1,26 @@
 ---
 
-# - name: Initial setup
-#   hosts: all
-#   become: yes
-#   tasks:
-#     - name: Setup interface
-#       template:
-#         src: templates/enp0s8.j2
-#         dest: /etc/netplan/55-enp0s8.yaml
-#       notify:
-#         - netplan apply
+- name: Initial setup
+  hosts: all
+  become: yes
+  tasks:
+    - name: Setup interface
+      template:
+        src: templates/enp0s8.j2
+        dest: /etc/netplan/55-enp0s8.yaml
+      notify:
+        - netplan apply
 
 
-#     - name: systemd-resolved
-#       service:
-#         name: systemd-resolved
-#         state: stopped
-#         enabled: no
+    - name: systemd-resolved
+      service:
+        name: systemd-resolved
+        state: stopped
+        enabled: no
 
-#   handlers:
-#     - name: netplan apply
-#       shell: netplan apply
+  handlers:
+    - name: netplan apply
+      shell: netplan apply
 
 - name: setup dns
   hosts: ubuntu
@@ -29,7 +29,6 @@
     - name: dns package
       apt:
         package: bind9
-
     - name: config bind
       template:
         src: templates/named.conf.options.j2
@@ -48,16 +47,16 @@
 
     - name: config db
       template:
-        src: templates/db.gar.j2
-        dest: /etc/bind/db.gar
+        src: templates/db.lux.j2
+        dest: /etc/bind/db.lux
       when: dns_role == "master"
       notify:
         - bind reload db
 
     - name: config db ptr
       template:
-        src: templates/db.gar.ptr.j2
-        dest: /etc/bind/db.gar.ptr
+        src: templates/db.lux.ptr.j2
+        dest: /etc/bind/db.lux.ptr
       when: dns_role == "master"
       notify:
         - bind reload db

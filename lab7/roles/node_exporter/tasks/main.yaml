@@ -1,0 +1,7 @@
+---
+
+- name: Download
+  get_url:
+    url: https://192.30.255.113/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+    dest: /opt/
+    validate_certs: False

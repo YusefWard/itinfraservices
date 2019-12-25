@@ -1,6 +1,6 @@
 ---
 - name: Init for yusef
-  hosts: ubuntu
+  hosts: yusef
   become: yes
   tasks:
   - name: Sudo without password
@@ -13,7 +13,7 @@
       state: present
       key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 - name: Init for vm2
-  hosts: 192.168.56.102
+  hosts: vm2
   become: yes
   tasks:
   - name: Sudo without password
