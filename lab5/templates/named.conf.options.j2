@@ -1,4 +1,4 @@
-acl nets {
+acl abc {
   {% for ip in localnets %}
     {{ ip }};
   {% endfor %}
@@ -14,7 +14,7 @@ options {
 
 	dnssec-validation auto;
   allow-query {
-    nets;
+    abc;
   };
 	auth-nxdomain no;    # conform to RFC1035
 	listen-on-v6 { any; };

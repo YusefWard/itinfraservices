@@ -1,7 +1,6 @@
 ---
-
 - name: Initial setup
-  hosts: all
+  hosts: dns
   become: yes
   tasks:
     - name: Setup interface
@@ -10,7 +9,7 @@
         dest: /etc/netplan/55-enp0s8.yaml
       notify:
         - netplan apply
-
+        - resolv.conf fix
 
     - name: systemd-resolved
       service:
@@ -21,14 +20,21 @@
   handlers:
     - name: netplan apply
       shell: netplan apply
+    - name: resolv.conf fix
+      template:
+        src: resolv.conf.j2
+        dest: /etc/resolv.conf
 
 - name: setup dns
-  hosts: ubuntu
+  hosts: dns
   become: yes
   tasks:
     - name: dns package
       apt:
         package: bind9
+        update_cache: yes
+        state: latest
+
     - name: config bind
       template:
         src: templates/named.conf.options.j2

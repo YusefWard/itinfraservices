@@ -1,6 +1,6 @@
 ---
 - name: First play
-  hosts: 127.0.0.1
+  hosts: yusef
   remote_user: yusef
   become: yes
   tasks:
@@ -24,6 +24,58 @@
     copy:
       dest: /etc/sudoers.d/yusef
       content: "yusef      ALL = NOPASSWD: ALL"
+  - name: Create teachers group
+    group:
+      name: teachers
+      state: present
+  - name: Create sysadmins group
+    group:
+      name: sysadmins
+      state: present
+  - name: Add Roman Kuchin to sysadmins
+    user:
+      name: romankuchin
+      groups: sysadmins,teachers
+      append: yes
+  - name: Add Juri Hudolejev to sysadmins
+    user:
+      name: hudolejev
+      groups: sysadmins,teachers
+      append: yes
+
+  - name: Show process list
+    command: "ps"
+    register: abc
+
+  - name: Show process output
+    debug:
+      var: abc.stdout_lines
+
+- name: Second play
+  hosts: vm2
+  remote_user: vm2
+  become: yes
+  tasks:
+  - name: Initialize SSH 
+    authorized_key:
+      user: vm2
+      state: present 
+      key: "{{ lookup('file', '/Users/YusefWard/.ssh/id_rsa.pub') }}"
+    
+  - name: Authorize Roman Kuchin SSH
+    authorized_key:
+      user: vm2
+      state: present
+      key: https://github.com/romankuchin.keys
+  - name: Authorize Juri Hudolejev with SSH
+    authorized_key:
+      user: vm2
+      state: present
+      key: https://github.com/hudolejev.keys
+  - name: Sudo without password
+    copy:
+      dest: /etc/sudoers.d/vm2
+      content: "vm2     ALL = NOPASSWD: ALL"
   - name: Create teachers group
     group:
       name: teachers

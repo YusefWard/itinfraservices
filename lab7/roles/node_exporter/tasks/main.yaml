@@ -1,7 +1,17 @@
----
-
 - name: Download
-  get_url:
-    url: https://192.30.255.113/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
+  get_url: 
+    url: https://github.com/prometheus/node_exporter/releases/download/v0.18.1/node_exporter-0.18.1.linux-amd64.tar.gz
     dest: /opt/
-    validate_certs: False
+- name: folder
+  file:
+    path: /opt/node_exporter
+    state: directory
+    mode: '0755'
+
+- name: untar
+  unarchive:
+      src: /opt/node_exporter-0.18.1.linux-amd64.tar.gz
+      dest: /opt/node_exporter
+      remote_src: yes
+      extra_opts:
+        - --strip-components=1

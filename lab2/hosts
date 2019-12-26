@@ -1,2 +1,4 @@
-[ubuntu]
-127.0.0.1 ansible_port=2200
+[yusef]
+yusef ansible_host=127.0.0.1 ansible_port=2281 ansible_user=yusef
+[vm2]
+vm2 ansible_host=127.0.0.1 ansible_port=2222 ansible_user=vm2
