@@ -4,3 +4,12 @@
   become: yes
   roles:
     - node_exporter
+    - bind
+
+- name: prometheus
+  hosts: prometheus
+  remote_user: user
+  become: yes
+  roles:
+    - prometheus
+    - grafana
