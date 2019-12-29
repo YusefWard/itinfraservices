@@ -1,0 +1,26 @@
+zone "lux.ttu" {
+	type master;
+	file "/etc/bind/db.lux";
+  allow-transfer {192.168.56.103;};
+	notify yes;
+
+  type slave;
+  file "/var/lib/bind/db.lux";
+  masters {
+   192.168.56.102;
+  };
+
+};
+
+zone "56.168.192.in-addr.arpa" {
+	type master;
+	file "/etc/bind/db.lux.ptr";
+  allow-transfer {192.168.56.103;};
+
+  type slave;
+  file "/var/lib/bind/db.lux.ptr";
+  masters {
+   192.168.56.102;
+  };
+
+};

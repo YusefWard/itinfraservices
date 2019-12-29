@@ -1,0 +1,20 @@
+---
+- name: All
+  become: yes
+  hosts: linux_legacy
+  roles:
+    - init
+    - bind
+
+- name: yusef
+  become: yes
+  hosts: yusef
+  roles:
+    - haproxy
+    - wordpress
+- name: vm2
+  become: yes
+  hosts: vm2
+  roles:
+    - mysql
+    

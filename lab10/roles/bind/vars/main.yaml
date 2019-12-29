@@ -1,0 +1,38 @@
+---
+forwarders:
+  - 8.8.8.8
+  - 1.1.1.1
+  - 9.9.9.10
+localnets:
+  - 192.168.56.0/24
+  - 10.0.2.0/24
+  - localhost
+records:
+  - type: NS
+    entries:
+      - name: lux.ttu.
+        address: yusef.lux.ttu.
+      - name: lux.ttu.
+        address: vm2.lux.ttu.
+  - type: A
+    entries:
+      - name: yusef.lux.ttu.
+        address: 192.168.56.102
+      - name: vm2.lux.ttu.
+        address: 192.168.56.103
+      - name: infra.lux.ttu.
+        addresses:
+          - 192.168.56.102
+          - 192.168.56.103
+  - type: CNAME
+    entries:
+      - name: ns
+        address: infra
+      - name: ns1
+        address: yusef
+      - name: ns2
+        address: vm2
+      - name: www
+        address: yusef
+      - name: db
+        address: vm2
