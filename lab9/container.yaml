@@ -1,0 +1,23 @@
+---
+- name: Initial Setup
+  become: yes
+  hosts: linux_legacy
+  roles:
+    - init
+- name: Set Bind
+  become: yes
+  hosts: linux
+  roles:
+    - bind
+- name: docker
+  become: yes
+  hosts: yusef
+  roles:
+    - wordpress
+    - grafana
+- name: Non-Docker
+  become: yes
+  hosts: vm2
+  roles:
+    - mysql
+    - prometheus

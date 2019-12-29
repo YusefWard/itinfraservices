@@ -1,0 +1,10 @@
+- name: netplan 
+  shell: "netplan apply"
+
+- name: dpkg
+  shell: "dpkg --configure -a"
+- name: systemd-resolved
+  service:
+      name: systemd-resolved
+      state: restarted
+      enabled: yes
