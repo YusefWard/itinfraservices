@@ -70,3 +70,4 @@ dns_records:
       - name: "influxdb.{{domain_name}}."
         protocol: IN
         address: "infra02.{{domain_name}}."
+      

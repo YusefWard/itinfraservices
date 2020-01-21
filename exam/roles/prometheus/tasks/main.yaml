@@ -7,8 +7,8 @@
 
 - name: Download
   get_url:
-    url: https://github.com/prometheus/prometheus/releases/download/v{{ prm_ver }}/prometheus-{{ prm_ver }}.linux-amd64.tar.gz
-    dest: /opt/download/prometheus-{{ prm_ver }}.linux-amd64.tar.gz
+    url: https://github.com/prometheus/prometheus/releases/download/v2.13.1/prometheus-2.13.1.linux-amd64.tar.gz
+    dest: /opt/download/prometheus-2.13.1.linux-amd64.tar.gz
 
 - name: create prometheus user
   user:
@@ -34,7 +34,7 @@
 
 - name: untar
   unarchive:
-    src: /opt/download/prometheus-{{ prm_ver }}.linux-amd64.tar.gz
+    src: /opt/download/prometheus-2.13.1.linux-amd64.tar.gz
     dest: /opt/prometheus
     remote_src: 'yes'
     extra_opts:

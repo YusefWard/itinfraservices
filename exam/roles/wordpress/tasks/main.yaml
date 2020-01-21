@@ -1,9 +1,8 @@
 ---
-- name: install Docker and python pip
+- name: install python pip
   apt:
     state: latest
-    force_apt_get: yes
-    name: ['docker.io', 'python3-pip']
+    name: ['docker.io','python3-pip']
 
 - name: Install docker pip
   pip:
@@ -21,7 +20,7 @@
         - 8{{ item }}80:80
       env:
          WORDPRESS_DB_USER={{ db_user }},
-         WORDPRESS_DB_HOST=192.168.56.103:3306,
+         WORDPRESS_DB_HOST=db.lux.ttu:3306,
          WORDPRESS_DB_PASSWORD={{ db_pass }},
          WORDPRESS_DB_NAME={{ db_name }}
       dns_servers:

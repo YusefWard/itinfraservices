@@ -1,5 +1,4 @@
 ---
-prm_ver: 2.15.1
 
 jobs:
   - name: prometheus

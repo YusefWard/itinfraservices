@@ -31,3 +31,8 @@
 
 - name: reload bind db
   shell: rndc reload
+
+- name: resolveconf fix
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
