@@ -1,0 +1,73 @@
+---
+- name: make /opt/download directory
+  file:
+    path: /opt/download
+    state: directory
+    mode: '0755'
+
+- name: Download
+  get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/v{{ prm_ver }}/prometheus-{{ prm_ver }}.linux-amd64.tar.gz
+    dest: /opt/download/prometheus-{{ prm_ver }}.linux-amd64.tar.gz
+
+- name: create prometheus user
+  user:
+    name: prometheus
+    create_home: 'no'
+    password: '*'
+    shell: /bin/false
+    system: 'yes'
+    state: present
+    
+- name: prometheus directory
+  file:
+    path: /opt/prometheus/data
+    recurse: 'yes'
+    state: directory
+    owner: prometheus
+    group: prometheus
+
+- name: Check if the file exists
+  stat:
+    path: /opt/prometheus/prometheus.yml
+  register: stat_result
+
+- name: untar
+  unarchive:
+    src: /opt/download/prometheus-{{ prm_ver }}.linux-amd64.tar.gz
+    dest: /opt/prometheus
+    remote_src: 'yes'
+    extra_opts:
+      - --strip-components=1
+  when: stat_result.stat.exists == False
+
+- name: Symbolic link at /usr/local/bin
+  file:
+    src: /opt/prometheus/prometheus
+    dest: /usr/local/bin/prometheus
+    state: link
+    remote_src: 'yes'
+
+- name: config prometheus
+  template:
+    src: prometheus.yaml.j2
+    dest: /opt/prometheus/prometheus.yml
+  notify:
+    - reload systemd-prometheus
+    - restart daemon prometheus
+  tags:
+    - p
+
+- name: systemd prometheus
+  template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+  notify:
+    - reload systemd-prometheus
+    - restart daemon prometheus
+
+- name: start prometheus
+  service:
+    name: prometheus
+    state: started
+    enabled: 'yes'

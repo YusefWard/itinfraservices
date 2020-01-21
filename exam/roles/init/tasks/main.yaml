@@ -1,0 +1,27 @@
+---
+- name: ssh keygen
+  user: name="{{ansible_user}}" generate_ssh_key=yes
+
+- authorized_key:
+    state: present
+    user: "{{ansible_user}}"
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: disable sudo pass
+  copy:
+    dest: "/etc/sudoers.d/{{ansible_user}}"
+    content: "{{ansible_user}}   ALL=NOPASSWD:ALL"
+
+- name: interface configuration
+  template:
+    src: "./templates/enp0s8.j2"
+    dest: "/etc/netplan/55-enp0s8.yaml"
+  notify:
+     - netplan apply
+  
+- name: setup syslog
+  template:
+    src: 51-telegraf.conf
+    dest: /etc/rsyslog.d/51-telegraf.conf
+  notify:
+    - restart rsyslog

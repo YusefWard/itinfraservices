@@ -1,0 +1,30 @@
+---
+- name: install Docker and python pip
+  apt:
+    state: latest
+    force_apt_get: yes
+    name: ['docker.io', 'python3-pip']
+
+- name: Install docker pip
+  pip:
+    name:
+      - docker
+      - requests>=2.20.1
+
+- name: Wordpress Docker Container
+  docker_container:
+      name: www-{{ item }}
+      image: wordpress:latest
+      detach: 'True'
+      restart_policy: always
+      published_ports:
+        - 8{{ item }}80:80
+      env:
+         WORDPRESS_DB_USER={{ db_user }},
+         WORDPRESS_DB_HOST=192.168.56.103:3306,
+         WORDPRESS_DB_PASSWORD={{ db_pass }},
+         WORDPRESS_DB_NAME={{ db_name }}
+      dns_servers:
+        - "{{ master_ip }}"
+        - "{{ slave_ip }}"
+  loop: "{{ wordpress_instance[:wordpress_active_instances] }}"

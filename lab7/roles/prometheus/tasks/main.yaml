@@ -1,3 +1,7 @@
+- name: Create prometheus nologin user
+  user: 
+    name: prometheus
+    shell: /sbin/nologin
 - name: Download
   get_url: 
     url: https://github.com/prometheus/prometheus/releases/download/v2.13.1/prometheus-2.13.1.linux-amd64.tar.gz

@@ -1,0 +1,72 @@
+---
+zone_name: lux
+reverse_zone: 56.168.192.in-addr.arpa
+domain_name: lux.ttu
+master_ip: 192.168.56.102
+slave_ip: 192.168.56.103
+forwarders:
+  - 8.8.8.8
+  - 1.1.1.1
+  - 9.9.9.10
+localnets:
+  - 192.168.56.0/24
+  - 10.0.2.0/24
+  - localhost
+dns_records:
+  - type: A
+    entries:
+      - name: "infra01.{{domain_name}}."
+        protocol: IN
+        address: "{{master_ip}}"
+
+      - name: "infra02.{{domain_name}}."
+        protocol: IN
+        address: "{{slave_ip}}"
+
+      - name: "ns.{{domain_name}}."
+        protocol: IN
+        address: "{{master_ip}}"
+
+      - name: "ns.{{domain_name}}."
+        protocol: IN
+        address: "{{slave_ip}}"
+
+  - type: NS
+    entries:
+      - name: "{{domain_name}}."
+        protocol: IN
+        address: "infra01.{{domain_name}}."
+
+      - name: "{{domain_name}}."
+        protocol: IN
+        address: "infra02.{{domain_name}}."
+
+  - type: CNAME
+    entries:
+      - name: "ns1.{{domain_name}}."
+        protocol: IN
+        address: "infra01.{{domain_name}}."
+
+      - name: "db.{{domain_name}}."
+        protocol: IN
+        address: "infra02.{{domain_name}}."
+ 
+      - name: "prometheus.{{domain_name}}."
+        protocol: IN
+        address: "infra02.{{domain_name}}."
+
+      - name: "grafana.{{domain_name}}."
+        protocol: IN
+        address: "infra01.{{domain_name}}."
+
+      - name: "ns2.{{domain_name}}."
+        protocol: IN
+        address: "infra02.{{domain_name}}."
+
+      - name: "www.{{domain_name}}."
+        protocol: IN
+        address: "infra01.{{domain_name}}."
+
+      - name: "influxdb.{{domain_name}}."
+        protocol: IN
+        address: "infra02.{{domain_name}}."

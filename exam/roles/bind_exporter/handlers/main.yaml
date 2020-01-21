@@ -1,0 +1,13 @@
+---
+- name: reload systemd-bind
+  service:
+    name: bind_exporter
+    state: started
+    enabled: yes
+    daemon-reload: yes
+
+- name: restart daemon bind-exp
+  service:
+    name: bind_exporter
+    state: restarted
+    enabled: yes

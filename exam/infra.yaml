@@ -1,0 +1,34 @@
+---
+
+- name: Setup for all
+  hosts: linux
+  become: yes
+  roles:
+    - bind
+    - bind_exporter
+    - node_exporter
+  tags:
+    - all
+
+- name: Wordpress & Grafana Containers
+  hosts: yusef
+  become: yes
+  roles:
+    - wordpress
+    - grafana
+    - haproxy
+    - haproxy_exporter
+  tags:
+    - wp
+
+- name: Mysql,Prometheus
+  hosts: vm2
+  become: yes
+  roles:
+    - mysql
+    - prometheus
+    - influxdb
+    - sql_exporter
+  tags:
+    - prometheus
+

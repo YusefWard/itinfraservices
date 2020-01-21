@@ -1,0 +1,13 @@
+$TTL	604800
+@	IN	SOA {{domain_name}}. root.{{domain_name}}. (
+			{{ tstamp.stdout_lines[0] }}		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+{%for record in dns_records%}
+{%for entry in record.entries%}
+{{entry.name}} {{entry.protocol}} {{record.type}} {{entry.address}}
+{%endfor%}
+{%endfor%}

@@ -1,0 +1,43 @@
+  
+---
+- name: install bind9 package
+  apt:
+    name: bind9
+    state: latest
+    force_apt_get: 'yes'
+  notify:
+    - disable systemd-resolved
+    - resolveconf fix
+- name: upload named.conf.local
+  template:
+    src: "./named.conf.local.j2"
+    dest: "/etc/bind/named.conf.local"
+  notify:
+    - check conf
+    - restart bind
+    - reload bind db
+
+- name: upload named.conf.options
+  template:
+    src: "./named.conf.options.j2"
+    dest: "/etc/bind/named.conf.options"
+  notify:
+    - check conf
+    - restart bind
+    - reload bind db
+
+- name: resolveconf fix
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+
+- name: calculate hash
+  copy:
+    content: "{{dns_records | hash('sha256') }}"
+    dest: "/etc/bind/db.lux.hash"
+  notify:
+    - gather timestamp
+    - set up zone database
+    - set up zone PTR database
+    - restart bind
+    - reload bind db

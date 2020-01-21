@@ -1,0 +1,31 @@
+---
+prm_ver: 2.15.1
+
+jobs:
+  - name: prometheus
+    port: 9090
+    targets:
+      - localhost
+  - name: ping
+    port: 9105
+    targets:
+      - 192.168.56.102
+      - 192.168.56.103
+  - name: linux
+    port: 9100
+    targets:
+      - 192.168.56.102
+      - 192.168.56.103
+  - name: bind
+    port: 9119
+    targets:
+      - 192.168.56.102
+      - 192.168.56.103
+  - name: haproxy
+    port: 9101
+    targets:
+      - 192.168.56.102
+  - name: mysql
+    port: 9104
+    targets:
+      - 192.168.56.103
