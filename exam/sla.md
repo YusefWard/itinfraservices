@@ -15,6 +15,7 @@ Retention
 Usability 
 ===============
 - Cron tabs shall be established to provide a complete backup system
+
 Storage
 ===============
 - Backup server and agent
