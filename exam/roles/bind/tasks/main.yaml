@@ -33,7 +33,7 @@
 
 - name: calculate hash
   copy:
-    content: "{{dns_records | hash('sha256') }}"
+    content: "{{records | hash('sha256') }}"
     dest: "/etc/bind/db.lux.hash"
   notify:
     - gather timestamp

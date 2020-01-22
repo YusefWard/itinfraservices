@@ -2,14 +2,11 @@ zone "lux.ttu" {
 {% if dns_role == "master" %}
 	type master;
 	file "/etc/bind/db.lux";
-  allow-transfer {
-    {{ slave_ip }};
-   };
+  allow-transfer {192.168.56.102;};
 	notify yes;
 {% else %}
   type slave;
   file "/var/lib/bind/db.lux";
-  masterfile-format text;
   masters {
     {{ master_ip }};
   };
@@ -20,13 +17,10 @@ zone "56.168.192.in-addr.arpa" {
 {% if dns_role == "master" %}
 	type master;
 	file "/etc/bind/db.lux.ptr";
-  allow-transfer { 
-    {{slave_ip}};
-   };
+  allow-transfer {192.168.56.102;};
 {% else %}
   type slave;
   file "/var/lib/bind/db.lux.ptr";
-  masterfile-format text;
   masters {
     {{ master_ip }};
   };

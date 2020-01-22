@@ -15,13 +15,13 @@
 - name: set up zone database
   template:
     src: "./templates/db.lux.j2"
-    dest: "/etc/bind/db.{{zone_name}}"
+    dest: "/etc/bind/db.{{name}}"
   when: dns_role == "master"
 
 - name: set up zone PTR database
   template:
     src: "./templates/db.lux.ptr.j2"
-    dest: "/etc/bind/db.{{zone_name}}.ptr"
+    dest: "/etc/bind/db.{{name}}.ptr"
   when: dns_role == "master"
 
 - name: restart bind

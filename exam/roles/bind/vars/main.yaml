@@ -1,9 +1,4 @@
 ---
-zone_name: lux
-reverse_zone: 56.168.192.in-addr.arpa
-domain_name: lux.ttu
-master_ip: 192.168.56.102
-slave_ip: 192.168.56.103
 forwarders:
   - 8.8.8.8
   - 1.1.1.1
@@ -12,62 +7,39 @@ localnets:
   - 192.168.56.0/24
   - 10.0.2.0/24
   - localhost
-dns_records:
-  - type: A
-    entries:
-      - name: "infra01.{{domain_name}}."
-        protocol: IN
-        address: "{{master_ip}}"
-
-      - name: "infra02.{{domain_name}}."
-        protocol: IN
-        address: "{{slave_ip}}"
-
-      - name: "ns.{{domain_name}}."
-        protocol: IN
-        address: "{{master_ip}}"
-
-      - name: "ns.{{domain_name}}."
-        protocol: IN
-        address: "{{slave_ip}}"
-
+  - 172.17.0.0/16
+records:
   - type: NS
     entries:
-      - name: "{{domain_name}}."
-        protocol: IN
-        address: "infra01.{{domain_name}}."
-
-      - name: "{{domain_name}}."
-        protocol: IN
-        address: "infra02.{{domain_name}}."
-
+      - name: lux.ttu.
+        address: infra01.lux.ttu.
+      - name: lux.ttu.
+        address: infra02.lux.ttu.
+  - type: A
+    entries:
+      - name: infra01.lux.ttu.
+        address: "{{ master_ip }}"
+      - name: infra02.lux.ttu.
+        address: "{{ slave_ip }}"
+      - name: infra.lux.ttu.
+        addresses:
+          - "{{ master_ip }}"
+          - "{{ slave_ip }}"
   - type: CNAME
     entries:
-      - name: "ns1.{{domain_name}}."
-        protocol: IN
-        address: "infra01.{{domain_name}}."
-
-      - name: "db.{{domain_name}}."
-        protocol: IN
-        address: "infra02.{{domain_name}}."
- 
-      - name: "prometheus.{{domain_name}}."
-        protocol: IN
-        address: "infra02.{{domain_name}}."
-
-      - name: "grafana.{{domain_name}}."
-        protocol: IN
-        address: "infra01.{{domain_name}}."
-
-      - name: "ns2.{{domain_name}}."
-        protocol: IN
-        address: "infra02.{{domain_name}}."
-
-      - name: "www.{{domain_name}}."
-        protocol: IN
-        address: "infra01.{{domain_name}}."
-
-      - name: "influxdb.{{domain_name}}."
-        protocol: IN
-        address: "infra02.{{domain_name}}."
-      
+      - name: ns
+        address: infra
+      - name: ns1
+        address: infra01
+      - name: ns2
+        address: infra02
+      - name: www
+        address: infra01
+      - name: grafana
+        address: infra01
+      - name: prometheus
+        address: infra02
+      - name: influxdb
+        address: infra02
+      - name: db
+        address: infra02

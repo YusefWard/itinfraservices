@@ -13,3 +13,4 @@ db_pass: !vault |
           3666
 wordpress_instance: [1,2]
 wordpress_active_instances: 2
+bind: 0.0.0.0
