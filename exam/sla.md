@@ -12,6 +12,7 @@ Frequency
 Retention
 ===============
 - Full backups are stored for one year
+
 Usability 
 ===============
 - Cron tabs shall be established to provide a complete backup system
